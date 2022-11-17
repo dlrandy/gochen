@@ -27,4 +27,5 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
 #     - run: npm test
-    - run: pm2 restart npm --name "gochen" -- start
+    - run: pm2 stop gochen
+    - run: pm2 start npm --name "gochen" -- start
