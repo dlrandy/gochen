@@ -25,6 +25,15 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - name: Make envfile
+      uses: SpicyPizza/create-envfile@v1.3
+      with:
+        envkey_DEBUG: false
+        NEXT_PUBLIC_FOURSQUARE_API_KEY: ${{ secrets.NEXT_PUBLIC_FOURSQUARE_API_KEY }}
+        NEXT_PUBLIC_UNSPLASH_ACCESS_KEY: ${{ secrets.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY }} 
+        NEXT_PUBLIC_UNSPLASH_SECRET_KEY: ${{ secrets.NEXT_PUBLIC_UNSPLASH_SECRET_KEY }}
+        file_name: .env
+        fail_on_empty: false
     - run: npm run build --if-present
 #     - run: npm test
     - run: pm2 reload ecosystem.config.js
