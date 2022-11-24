@@ -10,7 +10,7 @@ const unsplashApi = createApi({
 });
 
 const getUrlForCoffeeStores = (latLong:string, query:string, limit:number) => {
-    return `https://api.foursquare.com/v3/places/search?query=${query}&ll=${latLong}&limit=${limit}`;
+    return `https://api.foursquare.com/v3/places/search?query=${query}&ll=${latLong}&radius=6666&limit=${limit}`;
 };
 
 const getListOfCoffeeStorePhotos = async () => {

@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
-
+import useSWR from 'swr';
 import cls from "classnames";
 
 import styles from "../../styles/coffee-store/dynamic.module.css";
@@ -11,7 +11,7 @@ import { fetchCoffeeStores } from "../../lib/coffee-store/service";
  
 import { GetStaticPathsResult, GetStaticPropsContext } from "next";
 import { StoreContext } from '../../store/coffee-store/context';
-import { isEmpty } from "../../utils";
+import { isEmpty, fetcher } from "../../utils";
 
 type PageParams = {
   dynamic:string;
@@ -35,6 +35,7 @@ type CoffeStore = {
   name: string;
   neighbourhood: string;
   imgUrl: string;
+  voting?: number;
 };
 
 export async function getStaticPaths(...a:any):Promise<GetStaticPathsResult<PageParams>> {
@@ -47,7 +48,6 @@ export async function getStaticPaths(...a:any):Promise<GetStaticPathsResult<Page
       },
     };
   });
-  console.log(paths)
   return {
     paths,
     fallback: true,
@@ -58,22 +58,85 @@ const CoffeeStore = (initialProps:{coffeeStore:CoffeStore}) => {
  
   const router = useRouter();
   const id = router.query.dynamic;
-  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore);
-  const {state:{coffeeStores}} = useContext(StoreContext)
+  const [coffeeStore, setCoffeeStore] = useState(initialProps.coffeeStore||{});
+  const {state:{coffeeStores}} = useContext(StoreContext);
+  const handleCreateCoffeeStore = async (coffeeStore:CoffeStore) => {
+    try {
+      const { id, name, voting, imgUrl, neighbourhood, address } = coffeeStore;
+      const response = await fetch("/api/coffee/createCoffeeStore", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          name,
+          voting: 0,
+          imgUrl,
+          neighbourhood: neighbourhood || "",
+          address: address || "",
+        }),
+      });
+
+      const dbCoffeeStore = await response.json();
+    } catch (err) {
+      console.error("Error creating coffee store", err);
+    }
+  };
   useEffect(()=>{
     if (isEmpty(initialProps.coffeeStore)) {
       if (coffeeStores.length > 0) {
-        const findCoffeeStoreById = coffeeStores.find((coffeeStore) => {
+        const findCoffeeStoreInContext = coffeeStores.find((coffeeStore) => {
           return coffeeStore.id.toString() === id; //dynamic id
         });
-        setCoffeeStore(findCoffeeStoreById);
+        if (findCoffeeStoreInContext) {   
+          setCoffeeStore(findCoffeeStoreInContext);
+          handleCreateCoffeeStore(findCoffeeStoreInContext);
+        }
       }
+    } else {
+      //SSG
+      handleCreateCoffeeStore(initialProps.coffeeStore||{});
     }
   },[coffeeStores, id, initialProps.coffeeStore]);
+  
+  const { name, address, neighbourhood, imgUrl } = coffeeStore;
+  const [votingCount, setVotingCount] = useState(0);
+  const { data, error } = useSWR(`/api/coffee/getCoffeeStoreById?id=${id}`, fetcher);
+  useEffect(() => {
+    if (data && data.length > 0) {
+      setCoffeeStore(data[0]);
+      setVotingCount(data[0].voting);
+    }
+  }, [data]);
   if (router.isFallback) {
     return <div>loading...</div>;
   }
-  const { name, address, neighbourhood, imgUrl } = coffeeStore;
+  if (error) {
+    return <div>Something went wrong retrieving coffee store page</div>;
+  }
+  const handleUpvoteButton = async () => {
+    try {
+      const response = await fetch("/api/coffee/favouriteCoffeeStoreById", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+
+      const dbCoffeeStore = await response.json();
+
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (err) {
+      console.error("Error upvoting the coffee store", err);
+    }
+  };
   return (
     <div className={styles.layout}>
       <Head>
@@ -132,10 +195,10 @@ const CoffeeStore = (initialProps:{coffeeStore:CoffeStore}) => {
               height="24"
               alt="star icon"
             />
-            <p className={styles.text}>345</p>
+           <p className={styles.text}>{votingCount}</p>
           </div>
 
-          <button className={styles.upvoteButton}>
+          <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
             Up vote!
           </button>
         </div>

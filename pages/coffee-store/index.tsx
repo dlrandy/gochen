@@ -31,7 +31,7 @@ export const getStaticProps = async (
 export default function Home(props:HomeProps) {
   const router = useRouter();
   // const [coffeeStores, setCoffeeStores] = useState([]);
-  const [coffeeStoresError, setCoffeeStoresError] = useState(null);
+  const [coffeeStoresError, setCoffeeStoresError] = useState<string>("");
   const {dispatch, state} =useContext(StoreContext);
   const { coffeeStores, latLong } = state;
   const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
@@ -40,8 +40,13 @@ export default function Home(props:HomeProps) {
       async function setCoffeeStoresByLocation() {
         if (latLong) {
           try {
-            const fetchedCoffeeStores = await fetchCoffeeStores(latLong, 6);
-            console.log({ fetchedCoffeeStores });
+            // const fetchedCoffeeStores = await fetchCoffeeStores(latLong, 6);
+            const response = await fetch(
+              `/api/coffee/getCoffeeStoreByLocation?latLong=${latLong}&limit=30`
+            );
+  
+            const fetchedCoffeeStores = await response.json();
+             
             // setCoffeeStores(fetchedCoffeeStores);
             dispatch({
               type: ACTION_TYPES.SET_COFFEE_STORES,
@@ -49,9 +54,10 @@ export default function Home(props:HomeProps) {
                 coffeeStores: fetchedCoffeeStores,
               },
             });
+            setCoffeeStoresError("");
           } catch (error:any) {
             setCoffeeStoresError(error.message);
-            console.log("Error", { error });
+         
           }
         }
       }
@@ -62,11 +68,10 @@ export default function Home(props:HomeProps) {
   }
 
   
-  
-  console.log({ latLong, locationErrorMsg });
+ 
   const buttonText: string = isFindingLocation ? "Locating..." : "View stores nearby";
   const handleOnBannerBtnClick = () => {
-    console.log("hi banner button");
+ 
 
     handleTrackLocation();
   };
