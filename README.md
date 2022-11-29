@@ -3,3 +3,9 @@ https://medium.com/today-i-solved/how-to-deploy-next-js-on-aws-ec2-with-ssl-http
 https://keyframes.app/
 https://icons8.com/
 https://hype4.academy/tools/glassmorphism-generator
+
+
+npx craete-next-app@latest --experimental-app next13-use-warning
+
+
+
