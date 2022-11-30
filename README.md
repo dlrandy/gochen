@@ -7,5 +7,6 @@ https://hype4.academy/tools/glassmorphism-generator
 
 npx craete-next-app@latest --experimental-app next13-use-warning
 
+https://minic.ro/en/magic-links/
 
 

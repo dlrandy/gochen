@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./navbar.module.css";
 
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 
-// import { magic } from "../../lib/magic-client";
+import { magic } from "../../lib/magic/client";
 
 const NavBar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -13,33 +13,31 @@ const NavBar = () => {
   const [didToken, setDidToken] = useState("");
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const applyUsernameInNav = async () => {
-  //     try {
-  //       const { email, issuer } = await magic.user.getMetadata();
-  //       const didToken = await magic.user.getIdToken();
-  //       if (email) {
-  //         setUsername(email);
-  //         setDidToken(didToken);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error retrieving email", error);
-  //     }
-  //   };
-  //   applyUsernameInNav();
-  // }, []);
+  useEffect(() => {
+    async function getUsername() {
+      try {
+        const { email } = await magic.user.getMetadata();
+        if (email) {
+          setUsername(email);
+        }
+      } catch (error) {
+        console.log("Error retrieving email:", error);
+      }
+    }
+    getUsername();
+  }, []);
 
-  const handleOnClickHome = (e:React.SyntheticEvent<HTMLLIElement,MouseEvent>) => {
+  const handleOnClickHome = (e) => {
     e.preventDefault();
-    router.push("/");
+    router.push("/netflix/");
   };
 
-  const handleOnClickMyList = (e:React.SyntheticEvent<HTMLLIElement,MouseEvent>) => {
+  const handleOnClickMyList = (e) => {
     e.preventDefault();
     router.push("/browse/my-list");
   };
 
-  const handleShowDropdown = (e:React.SyntheticEvent<HTMLButtonElement,MouseEvent>) => {
+  const handleShowDropdown = (e) => {
     e.preventDefault();
     setShowDropdown(!showDropdown);
   };
@@ -48,18 +46,12 @@ const NavBar = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${didToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      const res = await response.json();
+      await magic.user.logout();
+      console.log(await magic.user.isLoggedIn());
+      router.push("/netflix/login");
     } catch (error) {
       console.error("Error logging out", error);
-      router.push("/login");
+      router.push("/netflix/login");
     }
   };
 
@@ -67,7 +59,7 @@ const NavBar = () => {
     <div className={styles.container}>
       <div className={styles.wrapper}>
         <Link className={styles.logoLink} href="/">
-       
+          
             <div className={styles.logoWrapper}>
               <Image
                 src="/icons/netflix.svg"
@@ -76,7 +68,7 @@ const NavBar = () => {
                 height={34}
               />
             </div>
-        
+          
         </Link>
 
         <ul className={styles.navItems}>

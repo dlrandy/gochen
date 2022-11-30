@@ -14,7 +14,8 @@ const fetchVideos = async (url:string) => {
 
 export const getCommonVideos = async (url:string) => {
   try {
-    const isDev = process.env.DEVELOPMENT;
+    console.log(process.env)
+    const isDev = process.env.NODE_ENV !=='production';
     const data = isDev ? videoTestData : await fetchVideos(url);
     if (data?.error) {
       console.error("Youtube API error", data.error);
