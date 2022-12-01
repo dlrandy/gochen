@@ -3,7 +3,6 @@ import Banner from "../../components/netbanner/netbanner";
 import styles from "../../styles/netflix/Home.module.css";
 import NavBar from "../../components/nav/navbar";
 import SectionCards from "../../components/netcard/section-cards/index";
-
 import {
   getVideos,
   getPopularVideos,
@@ -58,6 +57,7 @@ export default function Home({
   popularVideos,
   watchItAgainVideos,
 }:IHome) {
+ 
   return (
     <div className={styles.container}>
       <Head>

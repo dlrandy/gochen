@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -7,6 +7,8 @@ import Link from "next/link";
 
 import styles from "../../styles/netflix/Login.module.css";
 import { magic } from "../../lib/magic/client";
+import { InstanceWithExtensions, SDKBase } from "@magic-sdk/provider";
+import { MagicSDKExtensionsOption } from "magic-sdk";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,43 +30,53 @@ const Login = () => {
     };
   }, [router]);
 
-  const handleOnChangeEmail = (e) => {
+  const handleOnChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setUserMsg("");
-    console.log("event", e);
     const email = e.target.value;
     setEmail(email);
   };
 
-  const handleLoginWithEmail = async (e) => {
+  const handleLoginWithEmail = async (e: MouseEvent) => {
     console.log("hi button");
     e.preventDefault();
     setIsLoading(true);
 
     if (email) {
-      if (email === "ziyucrc@gmail.com") {
-        //  log in a user by their email
-        try {
-          const didToken = await magic.auth.loginWithMagicLink({
-            email,
+      //  log in a user by their email
+      try {
+        const didToken = await (
+          magic as InstanceWithExtensions<
+            SDKBase,
+            MagicSDKExtensionsOption<string>
+          >
+        ).auth.loginWithMagicLink({
+          email,
+        });
+        console.log({ didToken });
+        if (didToken) {
+          const response = await fetch("/api/netflix/login", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${didToken}`,
+              "Content-Type": "application/json",
+            },
           });
-          console.log({ didToken });
-          if (didToken) {
-            setIsLoading(false);
+          const loggedInResponse = await response.json();
+          if (loggedInResponse.done) {
             router.push("/netflix");
+          } else {
+            setIsLoading(false);
+            setUserMsg("Something went wrong logging in");
           }
-        } catch (error) {
-          // Handle errors if required!
-          console.error("Something went wrong logging in", error);
-          setIsLoading(false);
         }
-      } else {
+      } catch (error) {
+        // Handle errors if required!
+        console.error("Something went wrong logging in", error);
         setIsLoading(false);
-        setUserMsg("Something went wrong logging in");
       }
     } else {
-      // show user message
       setIsLoading(false);
-      setUserMsg("Enter a valid email address");
+      setUserMsg("Something went wrong logging in");
     }
   };
 
@@ -77,16 +89,14 @@ const Login = () => {
       <header className={styles.header}>
         <div className={styles.headerWrapper}>
           <Link className={styles.logoLink} href="/">
-      
-              <div className={styles.logoWrapper}>
-                <Image
-                  src="/icons/netflix.svg"
-                  alt="Netflix logo"
-                  width={128}
-                  height={34}
-                />
-              </div>
-         
+            <div className={styles.logoWrapper}>
+              <Image
+                src="/icons/netflix.svg"
+                alt="Netflix logo"
+                width={128}
+                height={34}
+              />
+            </div>
           </Link>
         </div>
       </header>
