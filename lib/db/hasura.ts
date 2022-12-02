@@ -70,7 +70,135 @@ export async function queryHasuraGQL(operationsDoc: string, operationName: strin
 
   return await result.json();
 }
+export async function insertStats(
+  token: string,
+  { favourited, userId, watched, videoId }: { favourited: string, userId: string, watched: string, videoId: string }
+) {
+  const operationsDoc = `
+  mutation insertStats($favourited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
+    insert_stats_one(object: {
+      favourited: $favourited, 
+      userId: $userId, 
+      watched: $watched, 
+      videoId: $videoId
+    }) {
+        favourited
+        userId
+    }
+  }
+`;
 
+  return await queryHasuraGQL(
+    operationsDoc,
+    "insertStats",
+    { favourited, userId, watched, videoId },
+    token
+  );
+}
+
+export async function updateStats(
+  token:string,
+  { favourited, userId, watched, videoId }:{ favourited: string, userId: string, watched: string, videoId: string }
+) {
+  const operationsDoc = `
+mutation updateStats($favourited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
+  update_stats(
+    _set: {watched: $watched, favourited: $favourited}, 
+    where: {
+      userId: {_eq: $userId}, 
+      videoId: {_eq: $videoId}
+    }) {
+    returning {
+      favourited,
+      userId,
+      watched,
+      videoId
+    }
+  }
+}
+`;
+
+  return await queryHasuraGQL(
+    operationsDoc,
+    "updateStats",
+    { favourited, userId, watched, videoId },
+    token
+  );
+}
+
+export async function findVideoIdByUser(token:string, userId:string, videoId:string) {
+  const operationsDoc = `
+  query findVideoIdByUserId($userId: String!, $videoId: String!) {
+    stats(where: { userId: {_eq: $userId}, videoId: {_eq: $videoId }}) {
+      id
+      userId
+      videoId
+      favourited
+      watched
+    }
+  }
+`;
+
+  const response = await queryHasuraGQL(
+    operationsDoc,
+    "findVideoIdByUserId",
+    {
+      videoId,
+      userId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}
+
+export async function getWatchedVideos(userId:string, token:string) {
+  const operationsDoc = `
+  query watchedVideos($userId: String!) {
+    stats(where: {
+      watched: {_eq: true}, 
+      userId: {_eq: $userId},
+    }) {
+      videoId
+    }
+  }
+`;
+
+  const response = await queryHasuraGQL(
+    operationsDoc,
+    "watchedVideos",
+    {
+      userId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}
+
+export async function getMyListVideos(userId:string, token:string) {
+  const operationsDoc = `
+  query favouritedVideos($userId: String!) {
+    stats(where: {
+      userId: {_eq: $userId}, 
+      favourited: {_eq: 1}
+    }) {
+      videoId
+    }
+  }
+`;
+
+  const response = await queryHasuraGQL(
+    operationsDoc,
+    "favouritedVideos",
+    {
+      userId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}
 
 
 

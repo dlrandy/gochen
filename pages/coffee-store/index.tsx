@@ -94,7 +94,7 @@ export default function Home(props:HomeProps) {
         />
         <Image
           className={styles.heroImage}
-          src="/images/hero-image.png"
+          src="/static/images/hero-image.png"
           priority
           width={700}
           height={400}
@@ -105,7 +105,7 @@ export default function Home(props:HomeProps) {
           {locationErrorMsg && <p>Something went wrong: {locationErrorMsg}</p>}
         </div>
         {coffeeStoresError && <p>Something went wrong: {coffeeStoresError}</p>}
-        {coffeeStores.length > 0 && (
+        {coffeeStores?.length > 0 && (
           <div className={styles.sectionWrapper}>
             <h2 className={styles.heading2}>Stores near me</h2>
             <div className={styles.cardLayout}>
@@ -128,7 +128,7 @@ export default function Home(props:HomeProps) {
         )}
 
         <div className={styles.sectionWrapper}>
-          {props.coffeeStores.length > 0 && (
+          {props.coffeeStores?.length > 0 && (
             <>
               <h2 className={styles.heading2}>Toronto stores</h2>
               <div className={styles.cardLayout}>

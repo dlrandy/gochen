@@ -85,7 +85,7 @@ const CoffeeStore = (initialProps:{coffeeStore:CoffeStore}) => {
   };
   useEffect(()=>{
     if (isEmpty(initialProps.coffeeStore)) {
-      if (coffeeStores.length > 0) {
+      if (coffeeStores?.length > 0) {
         const findCoffeeStoreInContext = coffeeStores.find((coffeeStore) => {
           return coffeeStore.id.toString() === id; //dynamic id
         });
@@ -169,7 +169,7 @@ const CoffeeStore = (initialProps:{coffeeStore:CoffeStore}) => {
           {address && (
             <div className={styles.iconWrapper}>
               <Image
-                src="/icons/places.svg"
+                src="/static/icons/places.svg"
                 width="24"
                 height="24"
                 alt="places icon"
@@ -180,7 +180,7 @@ const CoffeeStore = (initialProps:{coffeeStore:CoffeStore}) => {
           {neighbourhood && (
             <div className={styles.iconWrapper}>
               <Image
-                src="/icons/nearMe.svg"
+                src="/static/icons/nearMe.svg"
                 width="24"
                 height="24"
                 alt="near me icon"
@@ -190,7 +190,7 @@ const CoffeeStore = (initialProps:{coffeeStore:CoffeStore}) => {
           )}
           <div className={styles.iconWrapper}>
             <Image
-              src="/icons/star.svg"
+              src="/static/icons/star.svg"
               width="24"
               height="24"
               alt="star icon"

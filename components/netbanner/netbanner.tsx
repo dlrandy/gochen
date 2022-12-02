@@ -24,7 +24,7 @@ const Banner = (props:IProps) => {
           <div className={styles.playBtnWrapper}>
             <button className={styles.btnWithIcon} onClick={handleOnPlay}>
               <Image
-                src="/icons/play_arrow.svg"
+                src="/static/icons/play_arrow.svg"
                 alt="Play icon"
                 width={32}
                 height={32}

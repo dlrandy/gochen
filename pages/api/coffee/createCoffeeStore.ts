@@ -21,7 +21,7 @@ import {
             if (id) {
               const records = await findRecordByFilter(id);
       
-              if (records.length !== 0) {
+              if (records?.length !== 0) {
                 res.json(records);
               } else {
                 //create a record

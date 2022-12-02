@@ -26,7 +26,7 @@ export const fetchCoffeeStores = async (
     latLong = "43.653833032607096%2C-79.37896808855945",
     limit = 6
 ) => {
-    const photos = await getListOfCoffeeStorePhotos();
+    const photos = await getListOfCoffeeStorePhotos() || [];
     const options = {
         method: "GET",
         headers: {
@@ -46,7 +46,7 @@ export const fetchCoffeeStores = async (
             address: result.location.formatted_address,
             name: result.name,
             neighbourhood: result.location.cross_street ||"",
-            imgUrl: photos.length > 0 ? photos[idx] : null,
+            imgUrl: photos?.length > 0 ? photos[idx] : null,
         };
     });
 };

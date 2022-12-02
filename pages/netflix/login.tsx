@@ -37,7 +37,7 @@ const Login = () => {
   };
 
   const handleLoginWithEmail = async (e: MouseEvent) => {
-    console.log("hi button");
+ 
     e.preventDefault();
     setIsLoading(true);
 
@@ -52,7 +52,7 @@ const Login = () => {
         ).auth.loginWithMagicLink({
           email,
         });
-        console.log({ didToken });
+      
         if (didToken) {
           const response = await fetch("/api/netflix/login", {
             method: "POST",
@@ -91,7 +91,7 @@ const Login = () => {
           <Link className={styles.logoLink} href="/">
             <div className={styles.logoWrapper}>
               <Image
-                src="/icons/netflix.svg"
+                src="/static/icons/netflix.svg"
                 alt="Netflix logo"
                 width={128}
                 height={34}

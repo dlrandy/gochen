@@ -34,7 +34,7 @@ const NavBar = () => {
 
   const handleOnClickMyList = (e) => {
     e.preventDefault();
-    router.push("/browse/my-list");
+    router.push("/netflix/browse/my-list");
   };
 
   const handleShowDropdown = (e) => {
@@ -47,7 +47,6 @@ const NavBar = () => {
 
     try {
       await magic.user.logout();
-      console.log(await magic.user.isLoggedIn());
       router.push("/netflix/login");
     } catch (error) {
       console.error("Error logging out", error);
@@ -62,7 +61,7 @@ const NavBar = () => {
           
             <div className={styles.logoWrapper}>
               <Image
-                src="/icons/netflix.svg"
+                src="/static/icons/netflix.svg"
                 alt="Netflix logo"
                 width={128}
                 height={34}
@@ -85,7 +84,7 @@ const NavBar = () => {
               <p className={styles.username}>{username}</p>
               {/** Expand more icon */}
               <Image
-                src={"/icons/expand_more.svg"}
+                src={"/static/icons/expand_more.svg"}
                 alt="Expand dropdown"
                 width={24}
                 height={24}

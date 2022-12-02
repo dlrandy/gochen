@@ -2,21 +2,21 @@
   font-family: 'Sono';
   font-style: normal;
   font-weight: 500;
-  src: url(/fonts/Sono-Regular.ttf) format('truetype');
+  src: url(/static/fonts/Sono-Regular.ttf) format('truetype');
 }
 
 @font-face {
   font-family: 'Sono';
   font-style: normal;
   font-weight: 600;
-  src: url(/fonts/Sono-SemiBold.ttf) format('truetype');
+  src: url(/static/fonts/Sono-SemiBold.ttf) format('truetype');
 }
 
 @font-face {
   font-family: 'Sono';
   font-style: normal;
   font-weight: 700;
-  src: url(/fonts/Sono-Bold.ttf) format('truetype');
+  src: url(/static/fonts/Sono-Bold.ttf) format('truetype');
 }
 html,
 body {
@@ -27,7 +27,7 @@ body {
     background-size: cover;
     background-position: 50% 50%;
     background-repeat: no-repeat;
-    background-image: url("/images/gradient.png");
+    background-image: url("/static/images/gradient.png");
   }
 
 a {

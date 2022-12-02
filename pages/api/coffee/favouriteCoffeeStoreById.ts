@@ -20,7 +20,7 @@ const favouriteCoffeeStoreById = async (req:NextApiRequest, res:NextApiResponse<
       if (id) {
         const records = await findRecordByFilter(id);
 
-        if (records.length !== 0) {
+        if (records?.length !== 0) {
           const record = records[0];
 
           const calculateVoting = parseInt(record.voting) + 1;
