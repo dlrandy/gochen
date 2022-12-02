@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
 
 import { useRouter } from "next/router";
 import Head from "next/head";

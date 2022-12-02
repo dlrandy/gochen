@@ -5,9 +5,9 @@ import SectionCards from "../../../components/netcard/section-cards";
 import { redirectUser } from "../../../utils/index";
 import { getMyList } from "../../../lib/videos";
 import styles from "../../../styles/netflix/MyList.module.css";
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext, NextPageContext } from "next";
 
-export async function getServerSideProps(context:NextPageContext) {
+export async function getServerSideProps(context:GetServerSidePropsContext) {
   const { userId, token } = await redirectUser(context);
 
   if (!userId) {
@@ -19,7 +19,7 @@ export async function getServerSideProps(context:NextPageContext) {
       },
     };
   }
-  const videos = await getMyList(userId, token);
+  const videos = await getMyList(userId, token||'');
 
   return {
     props: {

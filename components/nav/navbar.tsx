@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import styles from "./navbar.module.css";
 
 import { useRouter } from "next/router";
@@ -16,7 +16,7 @@ const NavBar = () => {
   useEffect(() => {
     async function getUsername() {
       try {
-        const { email } = await magic.user.getMetadata();
+        const { email } = await (magic !== null ? magic.user.getMetadata():{});
         if (email) {
           setUsername(email);
         }
@@ -27,26 +27,26 @@ const NavBar = () => {
     getUsername();
   }, []);
 
-  const handleOnClickHome = (e) => {
+  const handleOnClickHome = (e: SyntheticEvent) => {
     e.preventDefault();
     router.push("/netflix/");
   };
 
-  const handleOnClickMyList = (e) => {
+  const handleOnClickMyList = (e:SyntheticEvent) => {
     e.preventDefault();
     router.push("/netflix/browse/my-list");
   };
 
-  const handleShowDropdown = (e) => {
+  const handleShowDropdown = (e:MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setShowDropdown(!showDropdown);
   };
 
-  const handleSignout = async (e) => {
+  const handleSignout = async (e:MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
     try {
-      await magic.user.logout();
+      await magic?.user.logout();
       router.push("/netflix/login");
     } catch (error) {
       console.error("Error logging out", error);

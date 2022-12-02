@@ -27,8 +27,8 @@ export default async function login(req:NextApiRequest, res:NextApiResponse<{don
         process.env.JWT_SECRET!
       );
 
-      const isNewUserQuery = await isNewUser(token, metadata.issuer);
-      isNewUserQuery && (await createNewUser(token, metadata));
+      const isNewUserQuery = await isNewUser(token, metadata.issuer||'');
+      isNewUserQuery && (await createNewUser(token, metadata as any ));
       setTokenCookie(token, res);
       res.send({ done: true });
     } catch (error) {

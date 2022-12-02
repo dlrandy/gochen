@@ -8,11 +8,13 @@ import NavBar from "../../../components/nav/navbar";
 import Like from "../../../components/icons/like-icon";
 import DisLike from "../../../components/icons/dislike-icon";
 import { useEffect, useState } from "react";
-Modal.setAppElement("#__next");
-export async function getStaticProps(context:GetStaticPropsContext<{params:{videoId:string}}>) {
-  //data to fetch from API
-  const {params:{videoId}} = context;
 
+Modal.setAppElement("#__next");
+
+export async function getStaticProps(context:GetStaticPropsContext<{videoId:string}>) {
+  //data to fetch from API
+  const {params} = context;
+  const {videoId} = params||{videoId:''};
   const videoArray = await getYoutubeVideoById(videoId);
   return {
     props: {
@@ -80,7 +82,7 @@ const Video = ({ video }:any) => {
     setToggleDisLike(!toggleDisLike);
     setToggleLike(toggleDisLike);
     const favourited = !toggleDisLike ? 0 : 1;
-    await runRatingService(favourited);
+    await runRatingService(favourited.toString());
   };
 
   const handleToggleLike = async () => {
@@ -88,7 +90,7 @@ const Video = ({ video }:any) => {
     setToggleLike(!toggleLike);
     setToggleDisLike(toggleLike);
     const favourited = !toggleLike ? 1 : 0;
-    await runRatingService(favourited);
+    await runRatingService(favourited.toString());
   };
     return (
     <div>

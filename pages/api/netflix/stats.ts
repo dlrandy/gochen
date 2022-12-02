@@ -8,9 +8,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function stats(req:NextApiRequest, resp:NextApiResponse) {
   try {
-    console.log('====================================');
-    console.log( req.cookies?.get("token"));
-    console.log('====================================');
     const token = req.cookies?.token;
     if (!token) {
       resp.status(403).send({});
@@ -18,7 +15,7 @@ export default async function stats(req:NextApiRequest, resp:NextApiResponse) {
       const inputParams = req.method === "POST" ? req.body : req.query;
       const { videoId } = inputParams;
       if (videoId) {
-        const userId = await verifyToken(token);
+        const userId = await verifyToken(token) || '';
         const findVideo = await findVideoIdByUser(token, userId, videoId);
         const doesStatsExist = findVideo?.length > 0;
 
@@ -55,6 +52,6 @@ export default async function stats(req:NextApiRequest, resp:NextApiResponse) {
     }
   } catch (error) {
     console.error("Error occurred /stats", error);
-    resp.status(500).send({ done: false, error: error?.message });
+    resp.status(500).send({ done: false, error });
   }
 }
