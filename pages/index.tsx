@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Banner from "../components/banner/banner";
+import Link from "next/link";
 export default function Home() {
   return (
     <div className={styles.container}>
@@ -11,6 +12,14 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+      <ul className={styles.navItems}>
+          <li >
+            <Link href={"/netflix"}>go to the movies</Link>
+          </li>
+          <li >
+            <Link href={"/coffee-store"}>grab a coffee</Link>
+          </li>
+        </ul>
         <Banner />
         ready to run!!!
       </main>
