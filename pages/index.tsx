@@ -2,7 +2,18 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Banner from "../components/banner/banner";
 import Link from "next/link";
+import { SyntheticEvent } from "react";
+import router from "next/router";
 export default function Home() {
+  const handleOnClickHome = (e: SyntheticEvent) => {
+    e.preventDefault();
+    router.push("/netflix/");
+  };
+
+  const handleOnClickMyList = (e:SyntheticEvent) => {
+    e.preventDefault();
+    router.push("/coffee-store");
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -12,12 +23,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+      
       <ul className={styles.navItems}>
-          <li >
-            <Link href={"/netflix"}>go to the movies</Link>
+          <li className={styles.navItem} onClick={handleOnClickHome}>
+            go to the movies
           </li>
-          <li >
-            <Link href={"/coffee-store"}>grab a coffee</Link>
+          <li className={styles.navItem2} onClick={handleOnClickMyList}>
+            grab a coffee
           </li>
         </ul>
         <Banner />
