@@ -16,9 +16,10 @@ const NavBar = () => {
   useEffect(() => {
     async function getUsername() {
       try {
-        const { email } = await (magic !== null ? magic.user.getMetadata():{});
+        const { email, issuer  } = await (magic !== null ? magic.user.getMetadata():{});
         if (email) {
           setUsername(email);
+          setDidToken(issuer || '');
         }
       } catch (error) {
         console.log("Error retrieving email:", error);
@@ -46,8 +47,16 @@ const NavBar = () => {
     e.preventDefault();
 
     try {
-      await magic?.user.logout();
-      router.push("/netflix/login");
+      const response = await fetch("/api/netflix/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const res = await response.json();
+      // router.push("/netflix/login");
     } catch (error) {
       console.error("Error logging out", error);
       router.push("/netflix/login");

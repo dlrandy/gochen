@@ -10,7 +10,8 @@ export async function middleware(req:NextRequest, ev:NextFetchEvent) {
     pathname.startsWith("/_next") ||
     pathname.includes("login") ||
     userId ||
-    pathname.includes("/static")
+    pathname.includes("/static")||
+    ['','/'].includes(pathname)
   ) {
     return NextResponse.next();
   }
