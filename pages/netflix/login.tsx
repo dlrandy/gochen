@@ -7,8 +7,6 @@ import Link from "next/link";
 
 import styles from "../../styles/netflix/Login.module.css";
 import { magic } from "../../lib/magic/client";
-import { InstanceWithExtensions, SDKBase } from "@magic-sdk/provider";
-import { MagicSDKExtensionsOption } from "magic-sdk";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -44,14 +42,11 @@ const Login = () => {
     if (email) {
       //  log in a user by their email
       try {
-        const didToken = await (
-          magic as InstanceWithExtensions<
-            SDKBase,
-            MagicSDKExtensionsOption<string>
-          >
+        const didToken = magic ? await (
+          magic
         ).auth.loginWithMagicLink({
           email,
-        });
+        }) : null;
       
         if (didToken) {
           const response = await fetch("/api/netflix/login", {
