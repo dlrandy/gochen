@@ -23,8 +23,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    #- run: npm cache verify && npm ci
-    - run: pnpm ci
+    - run: npm cache verify && npm install
     - run: echo "${{ secrets.ENV_FILE }}" > .env
     - run: pnpm run build --if-present
 #     - run: npm test
