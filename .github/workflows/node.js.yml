@@ -43,7 +43,8 @@ jobs:
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-pnpm-store-
-
+    - name: clean pnpm store
+      run: store prune 
     - name: Install dependencies
       run: pnpm install
     - run: echo "${{ secrets.ENV_FILE }}" > .env
