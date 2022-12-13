@@ -30,12 +30,12 @@ const NavBar = () => {
 
   const handleOnClickHome = (e: SyntheticEvent) => {
     e.preventDefault();
-    router.push("/netflix/");
+    router.push("/youflix/");
   };
 
   const handleOnClickMyList = (e:SyntheticEvent) => {
     e.preventDefault();
-    router.push("/netflix/browse/my-list");
+    router.push("/youflix/browse/my-list");
   };
 
   const handleShowDropdown = (e:MouseEvent<HTMLButtonElement>) => {
@@ -47,7 +47,7 @@ const NavBar = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("/api/netflix/logout", {
+      const response = await fetch("/api/youflix/logout", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${didToken}`,
@@ -56,10 +56,10 @@ const NavBar = () => {
       });
 
       const res = await response.json();
-      // router.push("/netflix/login");
+      // router.push("/youflix/login");
     } catch (error) {
       console.error("Error logging out", error);
-      router.push("/netflix/login");
+      router.push("/youflix/login");
     }
   };
 
@@ -70,8 +70,8 @@ const NavBar = () => {
           
             <div className={styles.logoWrapper}>
               <Image
-                src="/static/icons/netflix.svg"
-                alt="Netflix logo"
+                src="/static/icons/youflix.svg"
+                alt="youflix logo"
                 width={128}
                 height={34}
               />

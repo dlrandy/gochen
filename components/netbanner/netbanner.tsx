@@ -8,7 +8,7 @@ const Banner = (props:IProps) => {
   const router = useRouter();
 
   const handleOnPlay = () => {
-    router.push(`netflix/video/${videoId}`);
+    router.push(`youflix/video/${videoId}`);
   };
   return (
     <div className={styles.container}>

@@ -18,7 +18,7 @@ export async function middleware(req:NextRequest, ev:NextFetchEvent) {
 
   if ((!token || !userId) && pathname !== "/login") {
     const url = req.nextUrl.clone();
-    url.pathname = "/netflix/login";
+    url.pathname = "/youflix/login";
     return NextResponse.rewrite(url);
   }
 }

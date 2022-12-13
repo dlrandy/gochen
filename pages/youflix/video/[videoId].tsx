@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Modal from "react-modal";
 import clsx from "classnames";
-import styles from "../../../styles/netflix/video/Video.module.css";
+import styles from "../../../styles/youflix/video/Video.module.css";
 import { getYoutubeVideoById } from "../../../lib/videos";
 import { GetStaticPropsContext } from 'next';
 import NavBar from "../../../components/nav/navbar";
@@ -49,7 +49,7 @@ const Video = ({ video }:any) => {
 
   useEffect(() => {
     const handleLikeDislikeService = async () => {
-      const response = await fetch(`/api/netflix/stats?videoId=${videoId}`, {
+      const response = await fetch(`/api/youflix/stats?videoId=${videoId}`, {
         method: "GET",
       });
       const data = await response.json();
@@ -66,7 +66,7 @@ const Video = ({ video }:any) => {
     handleLikeDislikeService();
   }, [videoId]);
   const runRatingService = async (favourited:string) => {
-    return await fetch("/api/netflix/stats", {
+    return await fetch("/api/youflix/stats", {
       method: "POST",
       body: JSON.stringify({
         videoId,

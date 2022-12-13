@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 
-import styles from "../../styles/netflix/Login.module.css";
+import styles from "../../styles/youflix/Login.module.css";
 import { magic } from "../../lib/magic/client";
 
 const Login = () => {
@@ -49,7 +49,7 @@ const Login = () => {
         }) : null;
       
         if (didToken) {
-          const response = await fetch("/api/netflix/login", {
+          const response = await fetch("/api/youflix/login", {
             method: "POST",
             headers: {
               Authorization: `Bearer ${didToken}`,
@@ -58,7 +58,7 @@ const Login = () => {
           });
           const loggedInResponse = await response.json();
           if (loggedInResponse.done) {
-            router.push("/netflix");
+            router.push("/youflix");
           } else {
             setIsLoading(false);
             setUserMsg("Something went wrong logging in");
@@ -78,7 +78,7 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Netflix SignIn</title>
+        <title>youflix SignIn</title>
       </Head>
 
       <header className={styles.header}>
@@ -86,8 +86,8 @@ const Login = () => {
           <Link className={styles.logoLink} href="/">
             <div className={styles.logoWrapper}>
               <Image
-                src="/static/icons/netflix.svg"
-                alt="Netflix logo"
+                src="/static/icons/youflix.svg"
+                alt="youflix logo"
                 width={128}
                 height={34}
               />

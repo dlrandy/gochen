@@ -20,7 +20,7 @@ export default async function logout(req: NextApiRequest, res: NextApiResponse) 
             console.error("Error occurred while logging out magic user", error);
         }
         //redirects user to login page
-        res.writeHead(302, { Location: "/netflix/login" });
+        res.writeHead(302, { Location: "/youflix/login" });
         res.end();
     } catch (error) {
         console.error({ error });

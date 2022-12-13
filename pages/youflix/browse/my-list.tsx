@@ -4,7 +4,7 @@ import NavBar from "../../../components/nav/navbar";
 import SectionCards from "../../../components/netcard/section-cards";
 import { redirectUser } from "../../../utils/index";
 import { getMyList } from "../../../lib/videos";
-import styles from "../../../styles/netflix/MyList.module.css";
+import styles from "../../../styles/youflix/MyList.module.css";
 import { GetServerSidePropsContext, NextPageContext } from "next";
 
 export async function getServerSideProps(context:GetServerSidePropsContext) {

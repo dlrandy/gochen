@@ -7,7 +7,7 @@ import router from "next/router";
 export default function Home() {
   const handleOnClickHome = (e: SyntheticEvent) => {
     e.preventDefault();
-    router.push("/netflix/");
+    router.push("/youflix/");
   };
 
   const handleOnClickMyList = (e:SyntheticEvent) => {
