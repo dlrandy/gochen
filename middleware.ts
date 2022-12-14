@@ -6,19 +6,19 @@ export async function middleware(req:NextRequest, ev:NextFetchEvent) {
   const userId = await verifyToken(token?.value||'');
   const { pathname } = req.nextUrl;
  
-  if (
-    pathname.startsWith("/_next") ||
-    pathname.includes("login") ||
-    userId ||
-    pathname.includes("/static")||
-    ['','/'].includes(pathname)
-  ) {
+  // if (
+  //   pathname.startsWith("/_next") ||
+  //   pathname.includes("login") ||
+  //   userId ||
+  //   pathname.includes("/static")||
+  //   ['','/'].includes(pathname)
+  // ) {
     return NextResponse.next();
-  }
+  // }
 
-  if ((!token || !userId) && pathname !== "/login") {
-    const url = req.nextUrl.clone();
-    url.pathname = "/youflix/login";
-    return NextResponse.rewrite(url);
-  }
+  // if ((!token || !userId) && pathname !== "/login") {
+  //   const url = req.nextUrl.clone();
+  //   url.pathname = "/youflix/login";
+  //   return NextResponse.rewrite(url);
+  // }
 }

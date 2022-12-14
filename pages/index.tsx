@@ -25,9 +25,9 @@ export default function Home() {
       <main className={styles.main}>
       
       <ul className={styles.navItems}>
-          <li className={styles.navItem} onClick={handleOnClickHome}>
+          {/* <li className={styles.navItem} onClick={handleOnClickHome}>
             go to the movies
-          </li>
+          </li> */}
           <li className={styles.navItem2} onClick={handleOnClickMyList}>
             grab a coffee
           </li>
